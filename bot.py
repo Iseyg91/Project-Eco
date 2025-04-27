@@ -197,13 +197,6 @@ async def creer_guilde(ctx):
         {"$inc": {"cash": -5000}}
     )
 
-    # Log éco si tu veux
-    await log_eco_channel(
-        bot, guild_id, ctx.author, "Création Guilde", 5000,
-        user_data["cash"], user_data["cash"] - 5000,
-        note=f"Guilde: {nom_guilde}"
-    )
-
     # Enregistrement dans la DB
     nouvelle_guilde = {
         "guild_id": guild_id,
