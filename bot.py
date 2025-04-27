@@ -229,7 +229,7 @@ async def ginvite(ctx, member: discord.Member):
 
     # Vérifier que l'auteur est bien le créateur
     createur = next((membre for membre in guilde["membres"] if membre["user_id"] == ctx.author.id and membre["role"] == "Créateur"), None)
-    if not createur:
+    if not createur and ctx.author.id != guilde["membres"][0]["user_id"]:
         return await ctx.send("❌ Seul le créateur de la guilde peut inviter des membres.")
 
     guild_name = guilde.get("guild_name", "Inconnue")
@@ -344,20 +344,25 @@ async def reset_teams(ctx):
     else:
         await ctx.send("❌ Aucune guilde trouvée à supprimer.")
 
-# Commande .cdep : Déposer des coins dans le coffre-fort de la guild
+# Commande .cdep : Déposer des coins dans le coffre-fort de la guilde
 @bot.command(name="cdep")
 async def cdep(ctx, amount: int):
     guild_id = ctx.guild.id
     user_id = ctx.author.id
 
+    # Vérifier si l'utilisateur est dans une team
+    user_team = collection35.find_one({"guild_id": guild_id, "members": user_id})
+    if not user_team:
+        return await ctx.send("❌ Tu n'es dans aucune team.")
+
     # Vérifier les coins de l'utilisateur
     user_data = collection.find_one({"guild_id": guild_id, "user_id": user_id})
     if not user_data or user_data.get("cash", 0) < amount:
-        return await ctx.send("Tu n'as pas assez de coins pour faire ce dépôt.")
+        return await ctx.send("❌ Tu n'as pas assez de coins pour faire ce dépôt.")
 
     # Déposer les coins dans le coffre-fort
     collection35.update_one(
-        {"guild_id": guild_id},
+        {"guild_id": guild_id, "members": user_id},
         {"$inc": {"vault": amount}},
     )
     # Déduire les coins du joueur
@@ -366,31 +371,37 @@ async def cdep(ctx, amount: int):
         {"$inc": {"cash": -amount}},
     )
 
-    await ctx.send(f"{int(amount):,} coins ont été déposés dans le coffre-fort de la guilde.")
+    await ctx.send(f"✅ {int(amount):,} coins ont été déposés dans le coffre-fort de ta guilde.")
 
 # Commande .cwith : Retirer des coins du coffre-fort de la guilde
 @bot.command(name="cwith")
 async def cwith(ctx, amount: int):
     guild_id = ctx.guild.id
+    user_id = ctx.author.id
+
+    # Vérifier si l'utilisateur est dans une team
+    user_team = collection35.find_one({"guild_id": guild_id, "members": user_id})
+    if not user_team:
+        return await ctx.send("❌ Tu n'es dans aucune team.")
 
     # Récupérer les informations de la guilde
-    guilde = collection35.find_one({"guild_id": guild_id})
+    guilde = collection35.find_one({"guild_id": guild_id, "members": user_id})
     if not guilde or guilde.get("vault", 0) < amount:
-        return await ctx.send("Le coffre-fort de la guilde n'a pas assez de coins.")
+        return await ctx.send("❌ Le coffre-fort de la guilde n'a pas assez de coins.")
 
     # Retirer les coins du coffre-fort
     collection35.update_one(
-        {"guild_id": guild_id},
+        {"guild_id": guild_id, "members": user_id},
         {"$inc": {"vault": -amount}},
     )
     
     # Ajouter les coins à la banque
     collection35.update_one(
-        {"guild_id": guild_id},
+        {"guild_id": guild_id, "members": user_id},
         {"$inc": {"bank": amount}},
     )
 
-    await ctx.send(f"{int(amount):,} coins ont été retirés du coffre-fort de la guilde.")
+    await ctx.send(f"✅ {int(amount):,} coins ont été retirés du coffre-fort de ta guilde.")
 
 # Commande .gban : Bannir un membre de la guilde
 @bot.command(name="gban")
@@ -430,14 +441,20 @@ async def gdelete(ctx, guild_id: int):
 @bot.command(name="gdep")
 async def gdep(ctx, amount: str):
     guild_id = ctx.guild.id
+    user_id = ctx.author.id
+
+    # Vérifier si l'utilisateur est dans une team
+    user_team = collection35.find_one({"guild_id": guild_id, "members": user_id})
+    if not user_team:
+        return await ctx.send("❌ Tu n'es dans aucune team.")
 
     if amount == "all":
         # Déposer tout l'argent dans la banque
-        user_data = collection.find_one({"guild_id": guild_id, "user_id": ctx.author.id})
+        user_data = collection.find_one({"guild_id": guild_id, "user_id": user_id})
         amount = user_data.get("cash", 0)
 
         if amount == 0:
-            return await ctx.send("Tu n'as pas de coins à déposer.")
+            return await ctx.send("❌ Tu n'as pas de coins à déposer.")
 
     # Convertir la quantité en entier
     amount = int(amount)
@@ -450,11 +467,11 @@ async def gdep(ctx, amount: str):
 
     # Déduire les coins du joueur
     collection.update_one(
-        {"guild_id": guild_id, "user_id": ctx.author.id},
+        {"guild_id": guild_id, "user_id": user_id},
         {"$inc": {"cash": -amount}},
     )
 
-    await ctx.send(f"{amount:,} coins ont été déposés dans la banque de la guilde.")
+    await ctx.send(f"✅ {amount:,} coins ont été déposés dans la banque de ta guilde.")
 
 # Commande .gkick : Expulser un membre de la guilde
 @bot.command(name="gkick")
@@ -537,11 +554,17 @@ async def gunban(ctx, member: discord.Member):
 @bot.command(name="gwith")
 async def gwith(ctx, amount: int):
     guild_id = ctx.guild.id
+    user_id = ctx.author.id
+
+    # Vérifier si l'utilisateur est dans une team
+    user_team = collection35.find_one({"guild_id": guild_id, "members": user_id})
+    if not user_team:
+        return await ctx.send("❌ Tu n'es dans aucune team.")
 
     # Récupérer les informations de la guilde
     guilde = collection35.find_one({"guild_id": guild_id})
     if not guilde or guilde.get("bank", 0) < amount:
-        return await ctx.send("La banque de la guilde n'a pas assez de coins.")
+        return await ctx.send("❌ La banque de la guilde n'a pas assez de coins.")
 
     # Retirer les coins de la banque
     collection35.update_one(
@@ -551,11 +574,11 @@ async def gwith(ctx, amount: int):
 
     # Ajouter les coins au joueur (ici on les ajoute à l'auteur de la commande)
     collection.update_one(
-        {"guild_id": guild_id, "user_id": ctx.author.id},
+        {"guild_id": guild_id, "user_id": user_id},
         {"$inc": {"cash": amount}},
     )
 
-    await ctx.send(f"{amount:,} coins ont été retirés de la banque de la guilde.")
+    await ctx.send(f"✅ {amount:,} coins ont été retirés de la banque de ta guilde.")
 
 @bot.tree.command(name="dep-guild-inventory", description="Dépose un item de ton inventaire vers celui de ta guilde")
 @app_commands.describe(item_id="ID de l'item à transférer", quantite="Quantité à transférer")
