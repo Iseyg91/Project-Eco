@@ -37,7 +37,7 @@ bot = commands.Bot(command_prefix="!", intents=intents, help_command=None)
 # --- ID Owner Bot ---
 ISEY_ID = 792755123587645461
 # Définir GUILD_ID
-GUILD_ID = 1364602748598751282
+GUILD_ID = 1034007767050104892
 
 # --- ID Etherya ---
 BOUNTY_CHANNEL_ID = 1355298449829920950
