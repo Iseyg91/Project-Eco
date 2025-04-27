@@ -31,13 +31,13 @@ from typing import Optional
 token = os.environ['ETHERYA']
 intents = discord.Intents.all()
 start_time = time.time()
-bot = commands.Bot(command_prefix="!!", intents=intents, help_command=None)
+bot = commands.Bot(command_prefix="!", intents=intents, help_command=None)
 
 #Configuration du Bot:
 # --- ID Owner Bot ---
 ISEY_ID = 792755123587645461
 # Définir GUILD_ID
-GUILD_ID = 1034007767050104892
+GUILD_ID = 1364602748598751282
 
 # --- ID Etherya ---
 BOUNTY_CHANNEL_ID = 1355298449829920950
