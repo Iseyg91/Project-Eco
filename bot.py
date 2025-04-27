@@ -175,9 +175,9 @@ async def creer_guilde(ctx):
     await ctx.send("🎨 Envoie une image pour la photo de profil de ta guilde (PFP) :")
     try:
         msg_pfp = await bot.wait_for("message", check=check_msg, timeout=60)
-        pfp_url = msg_pfp.attachments[0].url if msg_pfp.attachments else None
-        if not pfp_url:
+        if not msg_pfp.attachments:
             return await ctx.send("❌ Tu n'as pas envoyé d'image pour la PFP.")
+        pfp_url = msg_pfp.attachments[0].url
     except asyncio.TimeoutError:
         return await ctx.send("⏳ Temps écoulé. Recommence la commande.")
 
@@ -185,9 +185,9 @@ async def creer_guilde(ctx):
     await ctx.send("🎨 Envoie une image pour la bannière de ta guilde :")
     try:
         msg_banniere = await bot.wait_for("message", check=check_msg, timeout=60)
-        banniere_url = msg_banniere.attachments[0].url if msg_banniere.attachments else None
-        if not banniere_url:
+        if not msg_banniere.attachments:
             return await ctx.send("❌ Tu n'as pas envoyé d'image pour la bannière.")
+        banniere_url = msg_banniere.attachments[0].url
     except asyncio.TimeoutError:
         return await ctx.send("⏳ Temps écoulé. Recommence la commande.")
 
@@ -226,6 +226,66 @@ async def creer_guilde(ctx):
 
     await ctx.send(f"✅ Guilde **{nom_guilde}** créée avec succès !")
 
+@bot.command(name="ginvite")
+async def ginvite(ctx, member: discord.Member):
+    # Récupérer les informations de la guilde du joueur qui invite
+    guild_id = ctx.guild.id
+    guilde = collection35.find_one({"guild_id": guild_id})
+    if not guilde:
+        return await ctx.send("Aucune guilde trouvée.")
+
+    # Vérifier que l'auteur est bien le créateur
+    createur = next((membre for membre in guilde["membres"] if membre["user_id"] == ctx.author.id and membre["role"] == "Créateur"), None)
+    if not createur:
+        return await ctx.send("❌ Seul le créateur de la guilde peut inviter des membres.")
+
+    guild_name = guilde.get("guild_name", "Inconnue")
+    description = guilde.get("description", "Aucune description.")
+    pfp_url = guilde.get("pfp_url")
+    
+    # Créer l'embed d'invitation
+    embed = discord.Embed(
+        title=f"Invitation à la guilde {guild_name}",
+        description=f"Tu as été invité à rejoindre la guilde **{guild_name}** !\n\n{description}",
+        color=discord.Color.blue()
+    )
+    
+    if pfp_url:
+        embed.set_thumbnail(url=pfp_url)
+
+    # Créer les boutons "Accepter" et "Refuser"
+    class InviteButtons(View):
+        def __init__(self, inviter, invited_member):
+            super().__init__()
+            self.inviter = inviter
+            self.invited_member = invited_member
+
+        @discord.ui.button(label="Accepter", style=discord.ButtonStyle.green)
+        async def accept_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+            # Action quand le membre accepte l'invitation
+            if interaction.user == self.invited_member:
+                # Ajouter le membre à la guilde
+                collection35.update_one(
+                    {"guild_id": guild_id},
+                    {"$push": {"membres": {"user_id": self.invited_member.id, "role": "Membre"}}}
+                )
+                await interaction.response.send_message(f"{self.invited_member.mention} a accepté l'invitation à la guilde {guild_name} !", ephemeral=True)
+                # Envoie un message dans la guilde (optionnel)
+                await ctx.send(f"{self.invited_member.mention} a rejoint la guilde {guild_name}.")
+
+        @discord.ui.button(label="Refuser", style=discord.ButtonStyle.red)
+        async def decline_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+            # Action quand le membre refuse l'invitation
+            if interaction.user == self.invited_member:
+                await interaction.response.send_message(f"{self.invited_member.mention} a refusé l'invitation.", ephemeral=True)
+
+    # Créer la vue pour les boutons
+    view = InviteButtons(ctx.author, member)
+
+    # Envoyer l'embed et ajouter la vue avec les boutons dans le salon d'origine
+    await ctx.send(embed=embed, view=view)
+
+    await ctx.send(f"Une invitation a été envoyée à {member.mention}.")
 
 @bot.command(name="g")
 async def afficher_guilde(ctx):
@@ -290,62 +350,6 @@ async def reset_teams(ctx):
         await ctx.send(f"✅ Toutes les guildes ont été supprimées avec succès. {result.deleted_count} guildes supprimées.")
     else:
         await ctx.send("❌ Aucune guilde trouvée à supprimer.")
-
-@bot.command(name="ginvite")
-async def ginvite(ctx, member: discord.Member):
-    # Récupérer les informations de la guilde du joueur qui invite
-    guild_id = ctx.guild.id
-    guilde = collection35.find_one({"guild_id": guild_id})
-    if not guilde:
-        return await ctx.send("Aucune guilde trouvée.")
-
-    guild_name = guilde.get("guild_name", "Inconnue")
-    description = guilde.get("description", "Aucune description.")
-    pfp_url = guilde.get("pfp_url")
-    
-    # Créer l'embed d'invitation
-    embed = discord.Embed(
-        title=f"Invitation à la guilde {guild_name}",
-        description=f"Tu as été invité à rejoindre la guilde **{guild_name}** !\n\n{description}",
-        color=discord.Color.blue()
-    )
-    
-    if pfp_url:
-        embed.set_thumbnail(url=pfp_url)
-
-    # Créer les boutons "Accepter" et "Refuser"
-    class InviteButtons(View):
-        def __init__(self, inviter, invited_member):
-            super().__init__()
-            self.inviter = inviter
-            self.invited_member = invited_member
-
-        @discord.ui.button(label="Accepter", style=discord.ButtonStyle.green)
-        async def accept_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-            # Action quand le membre accepte l'invitation
-            if interaction.user == self.invited_member:
-                # Ajouter le membre à la guilde
-                collection35.update_one(
-                    {"guild_id": guild_id},
-                    {"$push": {"membres": {"user_id": self.invited_member.id, "role": "Membre"}}}
-                )
-                await interaction.response.send_message(f"{self.invited_member.mention} a accepté l'invitation à la guilde {guild_name} !", ephemeral=True)
-                # Envoie un message dans la guilde (optionnel)
-                await ctx.send(f"{self.invited_member.mention} a rejoint la guilde {guild_name}.")
-
-        @discord.ui.button(label="Refuser", style=discord.ButtonStyle.red)
-        async def decline_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-            # Action quand le membre refuse l'invitation
-            if interaction.user == self.invited_member:
-                await interaction.response.send_message(f"{self.invited_member.mention} a refusé l'invitation.", ephemeral=True)
-
-    # Créer la vue pour les boutons
-    view = InviteButtons(ctx.author, member)
-
-    # Envoyer l'embed et ajouter la vue avec les boutons dans le salon d'origine
-    await ctx.send(embed=embed, view=view)
-
-    await ctx.send(f"Une invitation a été envoyée à {member.mention}.")
 
 # Commande .cdep : Déposer des coins dans le coffre-fort de la guild
 @bot.command(name="cdep")
