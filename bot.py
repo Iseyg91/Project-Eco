@@ -351,7 +351,7 @@ async def cdep(ctx, amount: int):
     user_id = ctx.author.id
 
     # Vérifier si l'utilisateur est dans une team
-    user_team = collection35.find_one({"guild_id": guild_id, "members.user_id": user_id})  # Rechercher dans la sous-clé user_id de members
+    user_team = collection35.find_one({"guild_id": guild_id, "membres.user_id": user_id})  # Rechercher dans la sous-clé user_id de members
     if not user_team:
         return await ctx.send("❌ Tu n'es dans aucune team.")
 
@@ -380,12 +380,12 @@ async def cwith(ctx, amount: int):
     user_id = ctx.author.id
 
     # Vérifier si l'utilisateur est dans une team
-    user_team = collection35.find_one({"guild_id": guild_id, "members.user_id": user_id})  # Rechercher dans la sous-clé user_id de members
+    user_team = collection35.find_one({"guild_id": guild_id, "membres.user_id": user_id})  # Rechercher dans la sous-clé user_id de members
     if not user_team:
         return await ctx.send("❌ Tu n'es dans aucune team.")
 
     # Récupérer les informations de la guilde
-    guilde = collection35.find_one({"guild_id": guild_id, "members.user_id": user_id})  # Utiliser la même structure pour la recherche
+    guilde = collection35.find_one({"guild_id": guild_id, "membres.user_id": user_id})  # Utiliser la même structure pour la recherche
     if not guilde or guilde.get("vault", 0) < amount:
         return await ctx.send("❌ Le coffre-fort de la guilde n'a pas assez de coins.")
 
@@ -444,7 +444,7 @@ async def gdep(ctx, amount: str):
     user_id = ctx.author.id
 
     # Vérifier si l'utilisateur est dans une team
-    user_team = collection35.find_one({"guild_id": guild_id, "members.user_id": user_id})  # Rechercher dans la sous-clé user_id de members
+    user_team = collection35.find_one({"guild_id": guild_id, "membres.user_id": user_id})  # Rechercher dans la sous-clé user_id de members
     if not user_team:
         return await ctx.send("❌ Tu n'es dans aucune team.")
 
@@ -568,7 +568,7 @@ async def gwith(ctx, amount: int):
     user_id = ctx.author.id
 
     # Vérifier si l'utilisateur est dans une team
-    user_team = collection35.find_one({"guild_id": guild_id, "members.user_id": user_id})  # Rechercher dans la sous-clé user_id de members
+    user_team = collection35.find_one({"guild_id": guild_id, "membres.user_id": user_id})  # Rechercher dans la sous-clé user_id de members
     if not user_team:
         return await ctx.send("❌ Tu n'es dans aucune team.")
 
