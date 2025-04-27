@@ -351,7 +351,7 @@ async def cdep(ctx, amount: int):
     user_id = ctx.author.id
 
     # Vérifier si l'utilisateur est dans une team
-    user_team = collection35.find_one({"guild_id": guild_id, "members": user_id})
+    user_team = collection35.find_one({"guild_id": guild_id, "members.user_id": user_id})  # Rechercher dans la sous-clé user_id de members
     if not user_team:
         return await ctx.send("❌ Tu n'es dans aucune team.")
 
@@ -362,7 +362,7 @@ async def cdep(ctx, amount: int):
 
     # Déposer les coins dans le coffre-fort
     collection35.update_one(
-        {"guild_id": guild_id, "members": user_id},
+        {"guild_id": guild_id, "members.user_id": user_id},  # Assurer que l'utilisateur est bien référencé
         {"$inc": {"vault": amount}},
     )
     # Déduire les coins du joueur
@@ -380,24 +380,24 @@ async def cwith(ctx, amount: int):
     user_id = ctx.author.id
 
     # Vérifier si l'utilisateur est dans une team
-    user_team = collection35.find_one({"guild_id": guild_id, "members": user_id})
+    user_team = collection35.find_one({"guild_id": guild_id, "members.user_id": user_id})  # Rechercher dans la sous-clé user_id de members
     if not user_team:
         return await ctx.send("❌ Tu n'es dans aucune team.")
 
     # Récupérer les informations de la guilde
-    guilde = collection35.find_one({"guild_id": guild_id, "members": user_id})
+    guilde = collection35.find_one({"guild_id": guild_id, "members.user_id": user_id})  # Utiliser la même structure pour la recherche
     if not guilde or guilde.get("vault", 0) < amount:
         return await ctx.send("❌ Le coffre-fort de la guilde n'a pas assez de coins.")
 
     # Retirer les coins du coffre-fort
     collection35.update_one(
-        {"guild_id": guild_id, "members": user_id},
+        {"guild_id": guild_id, "members.user_id": user_id},  # Assurer que l'utilisateur est bien référencé
         {"$inc": {"vault": -amount}},
     )
     
     # Ajouter les coins à la banque
     collection35.update_one(
-        {"guild_id": guild_id, "members": user_id},
+        {"guild_id": guild_id, "members.user_id": user_id},  # Assurer que l'utilisateur est bien référencé
         {"$inc": {"bank": amount}},
     )
 
@@ -444,7 +444,7 @@ async def gdep(ctx, amount: str):
     user_id = ctx.author.id
 
     # Vérifier si l'utilisateur est dans une team
-    user_team = collection35.find_one({"guild_id": guild_id, "members": user_id})
+    user_team = collection35.find_one({"guild_id": guild_id, "members.user_id": user_id})  # Rechercher dans la sous-clé user_id de members
     if not user_team:
         return await ctx.send("❌ Tu n'es dans aucune team.")
 
@@ -457,7 +457,18 @@ async def gdep(ctx, amount: str):
             return await ctx.send("❌ Tu n'as pas de coins à déposer.")
 
     # Convertir la quantité en entier
-    amount = int(amount)
+    try:
+        amount = int(amount)
+    except ValueError:
+        return await ctx.send("❌ La quantité spécifiée n'est pas valide.")
+
+    if amount <= 0:
+        return await ctx.send("❌ Tu ne peux pas déposer une quantité de coins inférieure ou égale à 0.")
+
+    # Vérifier que l'utilisateur a suffisamment de coins pour effectuer le dépôt
+    user_data = collection.find_one({"guild_id": guild_id, "user_id": user_id})
+    if user_data.get("cash", 0) < amount:
+        return await ctx.send("❌ Tu n'as pas assez de coins pour faire ce dépôt.")
 
     # Déposer les coins dans la banque de la guilde
     collection35.update_one(
@@ -471,7 +482,7 @@ async def gdep(ctx, amount: str):
         {"$inc": {"cash": -amount}},
     )
 
-    await ctx.send(f"✅ {amount:,} coins ont été déposés dans la banque de ta guilde.")
+    await ctx.send(f"✅ {int(amount):,} coins ont été déposés dans la banque de ta guilde.")
 
 # Commande .gkick : Expulser un membre de la guilde
 @bot.command(name="gkick")
@@ -557,7 +568,7 @@ async def gwith(ctx, amount: int):
     user_id = ctx.author.id
 
     # Vérifier si l'utilisateur est dans une team
-    user_team = collection35.find_one({"guild_id": guild_id, "members": user_id})
+    user_team = collection35.find_one({"guild_id": guild_id, "members.user_id": user_id})  # Rechercher dans la sous-clé user_id de members
     if not user_team:
         return await ctx.send("❌ Tu n'es dans aucune team.")
 
