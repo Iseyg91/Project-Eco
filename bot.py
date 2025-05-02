@@ -374,31 +374,30 @@ async def cdep(ctx, amount: int):
 
     await ctx.send(f"✅ {int(amount):,} coins ont été déposés dans le coffre-fort de ta guilde.")
 
-# Commande .cwith : Retirer des coins du coffre-fort de la guilde
 @bot.command(name="cwith")
 async def cwith(ctx, amount: int):
     guild_id = ctx.guild.id
     user_id = ctx.author.id
 
     # Vérifier si l'utilisateur est dans une team
-    user_team = collection35.find_one({"guild_id": guild_id, "membres.user_id": user_id})  # Rechercher dans la sous-clé user_id de members
+    user_team = collection35.find_one({"guild_id": guild_id, "membres.user_id": user_id})
     if not user_team:
         return await ctx.send("❌ Tu n'es dans aucune team.")
 
     # Récupérer les informations de la guilde
-    guilde = collection35.find_one({"guild_id": guild_id, "membres.user_id": user_id})  # Utiliser la même structure pour la recherche
+    guilde = collection35.find_one({"guild_id": guild_id, "membres.user_id": user_id})
     if not guilde or guilde.get("vault", 0) < amount:
         return await ctx.send("❌ Le coffre-fort de la guilde n'a pas assez de coins.")
 
     # Retirer les coins du coffre-fort
     collection35.update_one(
-        {"guild_id": guild_id, "members.user_id": user_id},  # Assurer que l'utilisateur est bien référencé
+        {"guild_id": guild_id, "membres.user_id": user_id},  # Correction ici
         {"$inc": {"vault": -amount}},
     )
     
-    # Ajouter les coins à la banque
+    # Ajouter les coins à la banque de la guilde
     collection35.update_one(
-        {"guild_id": guild_id, "members.user_id": user_id},  # Assurer que l'utilisateur est bien référencé
+        {"guild_id": guild_id, "membres.user_id": user_id},  # Correction ici aussi
         {"$inc": {"bank": amount}},
     )
 
