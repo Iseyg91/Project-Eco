@@ -351,7 +351,7 @@ async def cdep(ctx, amount: int):
     user_id = ctx.author.id
 
     # Vérifier si l'utilisateur est dans une team
-    user_team = collection35.find_one({"guild_id": guild_id, "membres.user_id": user_id})  # Rechercher dans la sous-clé user_id de members
+    user_team = collection35.find_one({"guild_id": guild_id, "membres.user_id": user_id})
     if not user_team:
         return await ctx.send("❌ Tu n'es dans aucune team.")
 
@@ -362,9 +362,10 @@ async def cdep(ctx, amount: int):
 
     # Déposer les coins dans le coffre-fort
     collection35.update_one(
-        {"guild_id": guild_id, "members.user_id": user_id},  # Assurer que l'utilisateur est bien référencé
+        {"guild_id": guild_id, "membres.user_id": user_id},  # Correction ici
         {"$inc": {"vault": amount}},
     )
+
     # Déduire les coins du joueur
     collection.update_one(
         {"guild_id": guild_id, "user_id": user_id},
