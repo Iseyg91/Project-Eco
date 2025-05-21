@@ -570,7 +570,7 @@ async def withdraw(ctx: commands.Context, amount: str):
     user_id = user.id
 
     # Chercher les données actuelles
-    data = collection.find_one({"guild_id": guild_id, "user_id": user_id}) or {"cash": 0, "bank": 0}
+    data = collection28.find_one({"guild_id": guild_id, "user_id": user_id}) or {"cash": 0, "bank": 0}
     cash = data.get("cash", 0)
     bank = data.get("bank", 0)
 
