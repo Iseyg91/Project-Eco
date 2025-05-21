@@ -2172,7 +2172,7 @@ async def leaderboard(
         sort_key = lambda u: u.get("cash", 0) + u.get("bank", 0)
         title = f"Leaderboard - Total"
 
-    all_users_data = list(collection.find({"guild_id": guild_id}))
+    all_users_data = list(collection28.find({"guild_id": guild_id}))
     sorted_users = sorted(all_users_data, key=sort_key, reverse=True)
 
     page_size = 10
