@@ -478,7 +478,7 @@ async def bal(ctx: commands.Context, user: discord.User = None):
 
     role_name = f"Tu as le rôle **[𝑺ץ] Top {rank}** ! Félicitations !" if rank in TOP_ROLES else None
 
-    emoji_currency = "<:ecoEther:1341862366249357374>"
+    emoji_currency = "<:emoji_48:1362489008130621542>"
 
     def ordinal(n: int) -> str:
         return f"{n}{'st' if n == 1 else 'nd' if n == 2 else 'rd' if n == 3 else 'th'}"
@@ -547,7 +547,7 @@ async def deposit(ctx: commands.Context, amount: str):
             embed = discord.Embed(
                 description=(
                     f"<:classic_x_mark:1362711858829725729> {user.mention}, tu n'as pas assez de cash à déposer. "
-                    f"Tu as actuellement <:ecoEther:1341862366249357374> **{int(cash):,}** dans ton portefeuille."
+                    f"Tu as actuellement <:emoji_48:1362489008130621542> **{int(cash):,}** dans ton portefeuille."
                 ),
                 color=discord.Color.red()
             )
@@ -563,7 +563,7 @@ async def deposit(ctx: commands.Context, amount: str):
 
     # Embed de succès
     embed = discord.Embed(
-        description=f"<:Check:1362710665663615147> Tu as déposé <:ecoEther:1341862366249357374> **{int(deposit_amount):,}** dans ta banque !",
+        description=f"<:Check:1362710665663615147> Tu as déposé <:emoji_48:1362489008130621542> **{int(deposit_amount):,}** dans ta banque !",
         color=discord.Color.green()
     )
     embed.set_author(name=user.display_name, icon_url=user.display_avatar.url)
@@ -607,7 +607,7 @@ async def withdraw(ctx: commands.Context, amount: str):
             embed = discord.Embed(
                 description=(
                     f"<:classic_x_mark:1362711858829725729> Tu n'as pas autant à retirer. "
-                    f"Tu as actuellement <:ecoEther:1341862366249357374> **{int(bank):,}** dans ta banque."
+                    f"Tu as actuellement <:emoji_48:1362489008130621542> **{int(bank):,}** dans ta banque."
                 ),
                 color=discord.Color.red()
             )
@@ -623,7 +623,7 @@ async def withdraw(ctx: commands.Context, amount: str):
 
     # Création de l'embed de succès
     embed = discord.Embed(
-        description=f"<:Check:1362710665663615147> Tu as retiré <:ecoEther:1341862366249357374> **{int(withdrawn_amount):,}** de ta banque !",
+        description=f"<:Check:1362710665663615147> Tu as retiré <:emoji_48:1362489008130621542> **{int(withdrawn_amount):,}** de ta banque !",
         color=discord.Color.green()
     )
     embed.set_author(name=user.display_name, icon_url=user.display_avatar.url)
@@ -671,13 +671,13 @@ async def add_money(ctx: commands.Context, user: discord.User, amount: int, loca
         int(amount),
         balance_before,
         balance_after,
-        f"Ajout de {int(amount):,} <:ecoEther:1341862366249357374> dans le compte {field} de {user.mention} par {ctx.author.mention}."
+        f"Ajout de {int(amount):,} <:emoji_48:1362489008130621542> dans le compte {field} de {user.mention} par {ctx.author.mention}."
     )
 
     # Embed de confirmation
     embed = discord.Embed(
         title="✅ Ajout effectué avec succès !",
-        description=f"**{int(amount):,} <:ecoEther:1341862366249357374>** ont été ajoutés à la **{field}** de {user.mention}.",
+        description=f"**{int(amount):,} <:emoji_48:1362489008130621542>** ont été ajoutés à la **{field}** de {user.mention}.",
         color=discord.Color.green()
     )
     embed.set_footer(text=f"Action réalisée par {ctx.author}", icon_url=ctx.author.display_avatar.url)
@@ -729,13 +729,13 @@ async def remove_money(ctx: commands.Context, user: discord.User, amount: int, l
         -int(amount),
         balance_before,
         balance_after,
-        f"Retrait de {int(amount):,} <:ecoEther:1341862366249357374> dans le compte {field} de {user.mention} par {ctx.author.mention}."
+        f"Retrait de {int(amount):,} <:emoji_48:1362489008130621542> dans le compte {field} de {user.mention} par {ctx.author.mention}."
     )
 
     # Embed confirmation
     embed = discord.Embed(
         title="✅ Retrait effectué avec succès !",
-        description=f"**{int(amount):,} <:ecoEther:1341862366249357374>** a été retiré de la **{field}** de {user.mention}.\nNouveau solde : **{balance_after:,}** <:ecoEther:1341862366249357374>",
+        description=f"**{int(amount):,} <:emoji_48:1362489008130621542>** a été retiré de la **{field}** de {user.mention}.\nNouveau solde : **{balance_after:,}** <:emoji_48:1362489008130621542>",
         color=discord.Color.green()
     )
     embed.set_footer(text=f"Action réalisée par {ctx.author}", icon_url=ctx.author.display_avatar.url)
@@ -785,13 +785,13 @@ async def set_money(ctx: commands.Context, user: discord.User, amount: int, loca
         int(amount) - balance_before,
         balance_before,
         int(amount),
-        f"Le solde du compte `{field}` de {user.mention} a été défini à {int(amount):,} <:ecoEther:1341862366249357374> par {ctx.author.mention}."
+        f"Le solde du compte `{field}` de {user.mention} a été défini à {int(amount):,} <:emoji_48:1362489008130621542> par {ctx.author.mention}."
     )
 
     # Création de l'embed
     embed = discord.Embed(
         title=f"{user.display_name} - {user.name}",
-        description=f"Le montant de **{field}** de {user.mention} a été défini à **{int(amount):,} <:ecoEther:1341862366249357374>**.",
+        description=f"Le montant de **{field}** de {user.mention} a été défini à **{int(amount):,} <:emoji_48:1362489008130621542>**.",
         color=discord.Color.green()
     )
     embed.set_author(name=user.display_name, icon_url=user.display_avatar.url)
@@ -851,7 +851,7 @@ async def pay(ctx: commands.Context, user: discord.User, amount: str):
             embed = discord.Embed(
                 description=(
                     f"<:classic_x_mark:1362711858829725729> {sender.mention}, tu n'as pas assez de cash. "
-                    f"Tu as actuellement <:ecoEther:1341862366249357374> **{sender_cash:,}** dans ton portefeuille."
+                    f"Tu as actuellement <:emoji_48:1362489008130621542> **{sender_cash:,}** dans ton portefeuille."
                 ),
                 color=discord.Color.red()
             )
@@ -880,13 +880,13 @@ async def pay(ctx: commands.Context, user: discord.User, amount: str):
         amount,
         None,
         None,
-        f"{user.mention} a reçu **{amount:,} <:ecoEther:1341862366249357374>** de la part de {sender.mention}."
+        f"{user.mention} a reçu **{amount:,} <:emoji_48:1362489008130621542>** de la part de {sender.mention}."
     )
 
     # Embed de succès
     embed = discord.Embed(
         description=(
-            f"<:Check:1362710665663615147> {user.mention} a reçu **{amount:,}** <:ecoEther:1341862366249357374> de ta part."
+            f"<:Check:1362710665663615147> {user.mention} a reçu **{amount:,}** <:emoji_48:1362489008130621542> de ta part."
         ),
         color=discord.Color.green()
     )
@@ -968,15 +968,15 @@ async def work(ctx: commands.Context):
 
     # Log + messages variés
     messages = [
-        f"Tu as travaillé dur et gagné **{amount:,} <:ecoEther:1341862366249357374>**. Bien joué !",
-        f"Bravo ! Tu as gagné **{amount:,} <:ecoEther:1341862366249357374>** après ton travail.",
-        f"Tu as travaillé avec assiduité et récolté **{amount:,} <:ecoEther:1341862366249357374>**.",
-        f"Du bon travail ! Voici **{amount:,} <:ecoEther:1341862366249357374>** pour toi.",
-        f"Félicitations, tu as gagné **{amount:,} <:ecoEther:1341862366249357374>** pour ton travail.",
-        f"Tu as gagné **{amount:,} <:ecoEther:1341862366249357374>** après une journée de travail bien remplie !",
-        f"Bien joué ! **{amount:,} <:ecoEther:1341862366249357374>** ont été ajoutés à ta balance.",
-        f"Voici ta récompense pour ton travail : **{amount:,} <:ecoEther:1341862366249357374>**.",
-        f"Tu es payé pour ton dur labeur : **{amount:,} <:ecoEther:1341862366249357374>**.",
+        f"Tu as travaillé dur et gagné **{amount:,} <:emoji_48:1362489008130621542>**. Bien joué !",
+        f"Bravo ! Tu as gagné **{amount:,} <:emoji_48:1362489008130621542>** après ton travail.",
+        f"Tu as travaillé avec assiduité et récolté **{amount:,} <:emoji_48:1362489008130621542>**.",
+        f"Du bon travail ! Voici **{amount:,} <:emoji_48:1362489008130621542>** pour toi.",
+        f"Félicitations, tu as gagné **{amount:,} <:emoji_48:1362489008130621542>** pour ton travail.",
+        f"Tu as gagné **{amount:,} <:emoji_48:1362489008130621542>** après une journée de travail bien remplie !",
+        f"Bien joué ! **{amount:,} <:emoji_48:1362489008130621542>** ont été ajoutés à ta balance.",
+        f"Voici ta récompense pour ton travail : **{amount:,} <:emoji_48:1362489008130621542>**.",
+        f"Tu es payé pour ton dur labeur : **{amount:,} <:emoji_48:1362489008130621542>**.",
     ]
     message = random.choice(messages)
 
@@ -989,7 +989,7 @@ async def work(ctx: commands.Context):
         amount,
         initial_cash,
         initial_cash + amount,
-        f"{user.mention} a gagné **{amount:,} <:ecoEther:1341862366249357374>** pour son travail."
+        f"{user.mention} a gagné **{amount:,} <:emoji_48:1362489008130621542>>** pour son travail."
     )
 
     # Embed de succès
@@ -1056,14 +1056,14 @@ async def slut(ctx: commands.Context):
     # Si gain ou rôle spécial, on gagne
     if outcome == "gain" or has_special_role:
         message = random.choice([
-            f"<:Check:1362710665663615147> Tu as séduit la bonne personne et reçu **{amount_gain} <:ecoEther:1341862366249357374>** en cadeau.",
-            f"<:Check:1362710665663615147> Une nuit torride t’a valu **{amount_gain} <:ecoEther:1341862366249357374>**.",
-            f"<:Check:1362710665663615147> Tu as été payé pour tes charmes : **{amount_gain} <:ecoEther:1341862366249357374>**.",
-            f"<:Check:1362710665663615147> Ta prestation a fait des ravages, tu gagnes **{amount_gain} <:ecoEther:1341862366249357374>**.",
-            f"<:Check:1362710665663615147> Ce client généreux t’a offert **{amount_gain} <:ecoEther:1341862366249357374>**.",
-            f"<:Check:1362710665663615147> Tu as chauffé la salle et récolté **{amount_gain} <:ecoEther:1341862366249357374>**.",
-            f"<:Check:1362710665663615147> Tes talents ont été récompensés avec **{amount_gain} <:ecoEther:1341862366249357374>**.",
-            f"<:Check:1362710665663615147> Tu as dominé la scène, et gagné **{amount_gain} <:ecoEther:1341862366249357374>**.",
+            f"<:Check:1362710665663615147> Tu as séduit la bonne personne et reçu **{amount_gain} <:emoji_48:1362489008130621542>** en cadeau.",
+            f"<:Check:1362710665663615147> Une nuit torride t’a valu **{amount_gain} <:emoji_48:1362489008130621542>**.",
+            f"<:Check:1362710665663615147> Tu as été payé pour tes charmes : **{amount_gain} <:emoji_48:1362489008130621542>**.",
+            f"<:Check:1362710665663615147> Ta prestation a fait des ravages, tu gagnes **{amount_gain} <:emoji_48:1362489008130621542>**.",
+            f"<:Check:1362710665663615147> Ce client généreux t’a offert **{amount_gain} <:emoji_48:1362489008130621542>**.",
+            f"<:Check:1362710665663615147> Tu as chauffé la salle et récolté **{amount_gain} <:emoji_48:1362489008130621542>**.",
+            f"<:Check:1362710665663615147> Tes talents ont été récompensés avec **{amount_gain} <:emoji_48:1362489008130621542>**.",
+            f"<:Check:1362710665663615147> Tu as dominé la scène, et gagné **{amount_gain} <:emoji_48:1362489008130621542>**.",
         ])
         collection28.update_one(
             {"guild_id": guild_id, "user_id": user_id},
@@ -1075,13 +1075,13 @@ async def slut(ctx: commands.Context):
 
     else:
         message = random.choice([
-            f"<:classic_x_mark:1362711858829725729> Ton plan a échoué, tu perds **{amount_loss} <:ecoEther:1341862366249357374>**.",
-            f"<:classic_x_mark:1362711858829725729> Ton client a disparu sans payer. Tu perds **{amount_loss} <:ecoEther:1341862366249357374>**.",
-            f"<:classic_x_mark:1362711858829725729> T’as glissé pendant ton show… Résultat : **{amount_loss} <:ecoEther:1341862366249357374>** de frais médicaux.",
-            f"<:classic_x_mark:1362711858829725729> Mauvais choix de client, il t’a volé **{amount_loss} <:ecoEther:1341862366249357374>**.",
-            f"<:classic_x_mark:1362711858829725729> Une nuit sans succès… Tu perds **{amount_loss} <:ecoEther:1341862366249357374>**.",
-            f"<:classic_x_mark:1362711858829725729> Ton charme n’a pas opéré… Pertes : **{amount_loss} <:ecoEther:1341862366249357374>**.",
-            f"<:classic_x_mark:1362711858829725729> Tu as été arnaqué par un faux manager. Tu perds **{amount_loss} <:ecoEther:1341862366249357374>**.",
+            f"<:classic_x_mark:1362711858829725729> Ton plan a échoué, tu perds **{amount_loss} <:emoji_48:1362489008130621542>**.",
+            f"<:classic_x_mark:1362711858829725729> Ton client a disparu sans payer. Tu perds **{amount_loss} <:emoji_48:1362489008130621542>**.",
+            f"<:classic_x_mark:1362711858829725729> T’as glissé pendant ton show… Résultat : **{amount_loss} <:emoji_48:1362489008130621542>** de frais médicaux.",
+            f"<:classic_x_mark:1362711858829725729> Mauvais choix de client, il t’a volé **{amount_loss} <:emoji_48:1362489008130621542>**.",
+            f"<:classic_x_mark:1362711858829725729> Une nuit sans succès… Tu perds **{amount_loss} <:emoji_48:1362489008130621542>**.",
+            f"<:classic_x_mark:1362711858829725729> Ton charme n’a pas opéré… Pertes : **{amount_loss} <:emoji_48:1362489008130621542>**.",
+            f"<:classic_x_mark:1362711858829725729> Tu as été arnaqué par un faux manager. Tu perds **{amount_loss} <:emoji_48:1362489008130621542>**.",
         ])
         collection28.update_one(
             {"guild_id": guild_id, "user_id": user_id},
@@ -1154,13 +1154,13 @@ async def crime(ctx: commands.Context):
 
     if outcome == "gain" or has_special_role:
         messages = [
-            f"Tu as braqué une banque sans te faire repérer et gagné **{gain_amount} <:ecoEther:1341862366249357374>**.",
-            f"Tu as volé une mallette pleine de billets ! Gain : **{gain_amount} <:ecoEther:1341862366249357374>**.",
-            f"Ton casse a été un succès, tu empoche **{gain_amount} <:ecoEther:1341862366249357374>**.",
-            f"Tu as braqué une bijouterie et revendu le tout pour **{gain_amount} <:ecoEther:1341862366249357374>**.",
-            f"Le vol de voiture a payé ! Tu gagnes **{gain_amount} <:ecoEther:1341862366249357374>**.",
-            f"Tu as escroqué un riche touriste : **{gain_amount} <:ecoEther:1341862366249357374>**.",
-            f"Ton hacking a fonctionné, transfert réussi de **{gain_amount} <:ecoEther:1341862366249357374>**.",
+            f"Tu as braqué une banque sans te faire repérer et gagné **{gain_amount} <:emoji_48:1362489008130621542>**.",
+            f"Tu as volé une mallette pleine de billets ! Gain : **{gain_amount} <:emoji_48:1362489008130621542>**.",
+            f"Ton casse a été un succès, tu empoche **{gain_amount} <:emoji_48:1362489008130621542>**.",
+            f"Tu as braqué une bijouterie et revendu le tout pour **{gain_amount} <:emoji_48:1362489008130621542>**.",
+            f"Le vol de voiture a payé ! Tu gagnes **{gain_amount} <:emoji_48:1362489008130621542>**.",
+            f"Tu as escroqué un riche touriste : **{gain_amount} <:emoji_48:1362489008130621542>**.",
+            f"Ton hacking a fonctionné, transfert réussi de **{gain_amount} <:emoji_48:1362489008130621542>**.",
         ]
         message = random.choice(messages)
 
@@ -1181,13 +1181,13 @@ async def crime(ctx: commands.Context):
 
     else:
         messages = [
-            f"Tu t’es fait attraper par la police et tu perds **{loss_amount} <:ecoEther:1341862366249357374>** en caution.",
-            f"Ton complice t’a trahi et s’est enfui avec **{loss_amount} <:ecoEther:1341862366249357374>**.",
-            f"Le système de sécurité t’a eu, tu paies **{loss_amount} <:ecoEther:1341862366249357374>**.",
-            f"Le plan a foiré, tu dois rembourser **{loss_amount} <:ecoEther:1341862366249357374>**.",
-            f"La victime t’a reconnu, tu files une amende de **{loss_amount} <:ecoEther:1341862366249357374>**.",
-            f"Un piège de la police t’a coûté **{loss_amount} <:ecoEther:1341862366249357374>**.",
-            f"Tu t’es blessé pendant le casse. Soins : **{loss_amount} <:ecoEther:1341862366249357374>**.",
+            f"Tu t’es fait attraper par la police et tu perds **{loss_amount} <:emoji_48:1362489008130621542>** en caution.",
+            f"Ton complice t’a trahi et s’est enfui avec **{loss_amount} <:emoji_48:1362489008130621542>**.",
+            f"Le système de sécurité t’a eu, tu paies **{loss_amount} <:emoji_48:1362489008130621542>**.",
+            f"Le plan a foiré, tu dois rembourser **{loss_amount} <:emoji_48:1362489008130621542>**.",
+            f"La victime t’a reconnu, tu files une amende de **{loss_amount} <:emoji_48:1362489008130621542>**.",
+            f"Un piège de la police t’a coûté **{loss_amount} <:emoji_48:1362489008130621542>**.",
+            f"Tu t’es blessé pendant le casse. Soins : **{loss_amount} <:emoji_48:1362489008130621542>**.",
         ]
         message = random.choice(messages)
 
@@ -1331,7 +1331,7 @@ async def cock_fight(ctx, amount: str):
             return
         if balance > max_bet:
             embed = discord.Embed(
-                description=f"<:classic_x_mark:1362711858829725729> {user.mention}, ta mise dépasse la limite de **{max_bet} <:ecoEther:1341862366249357374>**.",
+                description=f"<:classic_x_mark:1362711858829725729> {user.mention}, ta mise dépasse la limite de **{max_bet} <:emoji_48:1362489008130621542>**.",
                 color=discord.Color.red()
             )
             await ctx.send(embed=embed)
@@ -1349,7 +1349,7 @@ async def cock_fight(ctx, amount: str):
         amount = balance // 2
         if amount > max_bet:
             embed = discord.Embed(
-                description=f"<:classic_x_mark:1362711858829725729> {user.mention}, la moitié de ton cash dépasse la limite de **{max_bet} <:ecoEther:1341862366249357374>**.",
+                description=f"<:classic_x_mark:1362711858829725729> {user.mention}, la moitié de ton cash dépasse la limite de **{max_bet} <:emoji_48:1362489008130621542>**.",
                 color=discord.Color.red()
             )
             await ctx.send(embed=embed)
@@ -1383,7 +1383,7 @@ async def cock_fight(ctx, amount: str):
         return
     if amount > max_bet:
         embed = discord.Embed(
-            description=f"<:classic_x_mark:1362711858829725729> {user.mention}, la mise est limitée à **{max_bet} <:ecoEther:1341862366249357374>**.",
+            description=f"<:classic_x_mark:1362711858829725729> {user.mention}, la mise est limitée à **{max_bet} <:emoji_48:1362489008130621542>**.",
             color=discord.Color.red()
         )
         await ctx.send(embed=embed)
@@ -1413,7 +1413,7 @@ async def cock_fight(ctx, amount: str):
 
         # Embed victoire
         embed = discord.Embed(
-            description=f"<:Check:1362710665663615147> {user.mention}, ton poulet a **gagné** le combat et t’a rapporté <:ecoEther:1341862366249357374> **{win_amount}** ! 🐓",
+            description=f"<:Check:1362710665663615147> {user.mention}, ton poulet a **gagné** le combat et t’a rapporté <:emoji_48:1362489008130621542> **{win_amount}** ! 🐓",
             color=discord.Color.green()
         )
         embed.set_author(name=str(user), icon_url=user.avatar.url if user.avatar else user.default_avatar.url)
@@ -1558,10 +1558,10 @@ async def set_max_mise(ctx, amount: str = None):
                 timestamp=datetime.utcnow()
             )
             embed.add_field(name="Action", value="Mise à jour de la mise maximale", inline=True)
-            embed.add_field(name="Mise maximale", value=f"{amount} <:ecoEther:1341862366249357374>", inline=True)
+            embed.add_field(name="Mise maximale", value=f"{amount} <:emoji_48:1362489008130621542>", inline=True)
             await channel.send(embed=embed)
 
-    await ctx.send(f"✅ La mise maximale a été mise à **{amount} <:ecoEther:1341862366249357374>**.")
+    await ctx.send(f"✅ La mise maximale a été mise à **{amount} <:emoji_48:1362489008130621542>**.")
 
 # Gestion des erreurs liées aux permissions
 @set_depart_chance.error
@@ -1711,28 +1711,6 @@ async def rob(ctx, user: discord.User):
             description=f"{user.display_name} n’a pas de monnaie à voler.",
             color=discord.Color.red()
         ))
-
-    # Barrière bancaire
-    if discord.utils.get(target_member.roles, id=1365311602290851880):
-        now = datetime.utcnow()
-        today_str = now.strftime("%Y-%m-%d")
-        barrier_data = collection.find_one({"guild_id": guild_id, "user_id": target_id, "barriere_date": today_str})
-        if not barrier_data:
-            collection.update_one(
-                {"guild_id": guild_id, "user_id": target_id},
-                {"$set": {"barriere_date": today_str}},
-                upsert=True
-            )
-            return await ctx.send(embed=discord.Embed(
-                description=f"🛡️ La **barrière bancaire** de {user.display_name} a annulé le vol !",
-                color=discord.Color.blue()
-            ))
-
-    # Rôles spéciaux
-    has_half_rob_protection = discord.utils.get(target_member.roles, id=1365311588139274354)
-    has_counter_role = discord.utils.get(target_member.roles, id=1365313254108430396)
-    has_30_percent_protection = discord.utils.get(target_member.roles, id=1365312038716444672)
-
     # Calcul succès du vol
     robber_total = user_data["cash"] + user_data["bank"]
     rob_chance = max(80 - (robber_total // 1000), 10)
@@ -1783,7 +1761,7 @@ async def rob(ctx, user: discord.User):
         await log_eco_channel(bot, guild_id, ctx.author, "Vol", stolen, user_data["cash"], user_data["cash"] + stolen, f"Volé à {user.display_name}")
 
         return await ctx.send(embed=discord.Embed(
-            description=f"💰 Tu as volé **{int(stolen)}** à **{user.display_name}** !",
+            description=f"<:emoji_48:1362489008130621542> Tu as volé **{int(stolen)}** à **{user.display_name}** !",
             color=discord.Color.green()
         ).set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar.url))
 
@@ -2050,7 +2028,7 @@ async def russianroulette(ctx, arg: str):
         # Phase 2 : les survivants
         result_embed = discord.Embed(
             title="Survivants de la Roulette Russe",
-            description="\n".join([f"{p.mention} remporte <:ecoEther:1341862366249357374> {game['bet'] * 2}" for p in survivors]),
+            description="\n".join([f"{p.mention} remporte <:emoji_48:1362489008130621542> {game['bet'] * 2}" for p in survivors]),
             color=0xFF5C5C
         )
         await ctx.send(embed=result_embed)
@@ -2138,7 +2116,7 @@ async def daily(ctx: commands.Context):
 
     # Embed de succès
     success_embed = discord.Embed(
-        description=f"<:ecoEther:1341862366249357374> Vous avez reçu vos **{amount}** Coins quotidiens.\n"
+        description=f"<:emoji_48:1362489008130621542> Vous avez reçu vos **{amount}** Coins quotidiens.\n"
                     f"Votre prochaine récompense sera disponible dans **24 heures**.",
         color=discord.Color.green()
     )
@@ -2178,7 +2156,7 @@ async def leaderboard(
         return await ctx.send("Cette commande ne peut être utilisée qu'en serveur.")
 
     guild_id = ctx.guild.id
-    emoji_currency = "<:ecoEther:1341862366249357374>"
+    emoji_currency = "<:emoji_48:1362489008130621542>"
     bank_logo = "https://github.com/Iseyg91/Isey_aime_Cass/blob/main/1344747420159967293.png?raw=true"
 
     # Détection du tri via arguments dans le message
@@ -2325,7 +2303,7 @@ async def collect_income(ctx: commands.Context):
             upsert=True
         )
 
-        collected.append(f"{role.mention} | <:ecoEther:1341862366249357374>**{amount}** ({target})")
+        collected.append(f"{role.mention} | <:emoji_48:1362489008130621542>**{amount}** ({target})")
 
         await log_eco_channel(
             bot, guild.id, member,
