@@ -2210,7 +2210,7 @@ async def leaderboard(
 
         embed.add_field(name=title, value="\n".join(lines), inline=False)
 
-        author_data = collection.find_one({"guild_id": guild_id, "user_id": ctx.author.id})
+        author_data = collection28.find_one({"guild_id": guild_id, "user_id": ctx.author.id})
         user_rank = next((i + 1 for i, u in enumerate(sorted_users) if u["user_id"] == ctx.author.id), None)
         embed.set_footer(text=f"Page {page_num + 1}/{total_pages}  •  Ton rang: {user_rank}")
         return embed
