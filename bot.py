@@ -245,7 +245,7 @@ async def auto_collect_loop():
 
             # Parcourir uniquement les membres ayant le rôle
             for member in role.members:
-                cd_data = collection5.find_one({
+                cd_data = collection32.find_one({
                     "guild_id": guild.id,
                     "user_id": member.id,
                     "role_id": role.id
@@ -253,7 +253,7 @@ async def auto_collect_loop():
                 last_collect = cd_data.get("last_collect") if cd_data else None
 
                 if not last_collect or (now - last_collect).total_seconds() >= config["cooldown"]:
-                    eco_data = collection.find_one({
+                    eco_data = collection28.find_one({
                         "guild_id": guild.id,
                         "user_id": member.id
                     }) or {"guild_id": guild.id, "user_id": member.id, "cash": 1500, "bank": 0}
@@ -267,13 +267,13 @@ async def auto_collect_loop():
                     elif "percent" in config:
                         eco_data[config["target"]] += eco_data[config["target"]] * (config["percent"] / 100)
 
-                    collection.update_one(
+                    collection28.update_one(
                         {"guild_id": guild.id, "user_id": member.id},
                         {"$set": {config["target"]: eco_data[config["target"]]}},
                         upsert=True
                     )
 
-                    collection5.update_one(
+                    collection32.update_one(
                         {"guild_id": guild.id, "user_id": member.id, "role_id": role.id},
                         {"$set": {"last_collect": now}},
                         upsert=True
@@ -290,7 +290,7 @@ async def update_top_roles():
         if guild.id != GUILD_ID:  # On ne traite qu'un seul serveur
             continue
 
-        all_users_data = list(collection.find({"guild_id": guild.id}))
+        all_users_data = list(collection28.find({"guild_id": guild.id}))
         sorted_users = sorted(all_users_data, key=lambda u: u.get("cash", 0) + u.get("bank", 0), reverse=True)
         top_users = sorted_users[:3]
 
