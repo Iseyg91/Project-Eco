@@ -365,12 +365,6 @@ async def on_ready():
     except Exception as e:
         print(f"❌ Erreur de synchronisation des commandes slash : {e}")
 
-    while True:
-        for activity in activity_types:
-            for status in status_types:
-                await bot.change_presence(activity=activity, status=status)
-                await asyncio.sleep(10)
-
         for guild in bot.guilds:
             GUILD_SETTINGS[guild.id] = load_guild_settings(guild.id)
 
