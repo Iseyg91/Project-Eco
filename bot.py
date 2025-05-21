@@ -332,7 +332,6 @@ async def on_ready():
     bot.uptime = time.time()
 
     # Démarrer les tâches de fond
-    reward_voice.start()
     update_top_roles.start()
     auto_collect_loop.start()
 
