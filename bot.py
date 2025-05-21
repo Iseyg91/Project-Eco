@@ -610,15 +610,6 @@ async def on_error(event, *args, **kwargs):
 
 #------------------------------------------------------------------------- Commande Mention ainsi que Commandes d'Administration : Detections de Mots sensible et Mention
 
-user_messages = {}
-cooldowns = {}
-
-# Fonction pour générer une regex flexible
-def make_flexible_pattern(word):
-    # Autorise espaces, tirets, underscores ou points entre les mots
-    parts = word.split()
-    return r"[\s\-_\.]*".join(re.escape(part) for part in parts)
-
 @bot.event
 async def on_message(message):
     try:
@@ -626,6 +617,7 @@ async def on_message(message):
             return
 
         user_id = str(message.author.id)
+
         # 💸 1. Gain automatique de cash à chaque message
         try:
             from random import randint
@@ -648,6 +640,9 @@ async def on_message(message):
 
         # ✅ 2. Traitement normal
         await bot.process_commands(message)
+
+    except Exception as e:
+        print(f"Erreur dans on_message : {e}")
 
 #-------------------------------------------------------------------------------- Eco:
 
