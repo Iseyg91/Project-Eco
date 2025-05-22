@@ -103,9 +103,6 @@ collection41 = db2['ether_rob'] #Stock les cd de Rob
 collection42 = db2['anti_rob'] #Stock les rôle anti-rob
 collection43 = db2['daily_badge'] #Stock les cd des daily badge
 
-# --- Charger les paramètres du serveur dynamiquement ---
-def load_guild_settings(guild_id: int) -> dict:
-
 def get_cf_config(guild_id):
     config = collection35.find_one({"guild_id": guild_id})
     if not config:
