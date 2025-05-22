@@ -1379,7 +1379,7 @@ async def cock_fight(ctx, amount: str):
 
     # Chance de victoire
     win_data = collection33.find_one({"guild_id": guild_id, "user_id": user_id})
-    win_chance = win_data.get("win_chance", start_chance)
+    win_chance = (win_data or {}).get("win_chance", start_chance)
 
     did_win = random.randint(1, 100) <= win_chance
 
