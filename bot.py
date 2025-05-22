@@ -105,11 +105,9 @@ collection43 = db2['daily_badge'] #Stock les cd des daily badge
 
 # --- Charger les paramètres du serveur dynamiquement ---
 def load_guild_settings(guild_id: int) -> dict:
-    # Récupère la configuration spécifique au serveur à partir de la base MongoDB
-    return collection21.find_one({'guild_id': guild_id}) or {}
 
 def get_cf_config(guild_id):
-    config = collection8.find_one({"guild_id": guild_id})
+    config = collection35.find_one({"guild_id": guild_id})
     if not config:
         # Valeurs par défaut
         config = {
@@ -122,7 +120,7 @@ def get_cf_config(guild_id):
     return config
 
 async def log_eco_channel(bot, guild_id, user, action, amount, balance_before, balance_after, note=""):
-    config = collection9.find_one({"guild_id": guild_id})
+    config = collection36.find_one({"guild_id": guild_id})
     channel_id = config.get("eco_log_channel") if config else None
 
     if not channel_id:
@@ -149,7 +147,7 @@ async def log_eco_channel(bot, guild_id, user, action, amount, balance_before, b
 
 # Fonction pour récupérer les données d'un utilisateur
 def get_user_eco(guild_id, user_id):
-    user_data = collection10.find_one({"guild_id": guild_id, "user_id": user_id})
+    user_data = collection28.find_one({"guild_id": guild_id, "user_id": user_id})
     if not user_data:
         # Si l'utilisateur n'a pas encore de données, on les crée
         collection10.insert_one({
