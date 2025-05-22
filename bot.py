@@ -211,8 +211,15 @@ TOP_ROLES = {
 # Config des rôles
 COLLECT_ROLES_CONFIG = [
     {
-        "role_id": 1355157715550470335, #Membres
-        "amount": 1000,
+        "role_id": 1359963854402228315, #Membres
+        "amount": 150,
+        "cooldown": 3600,
+        "auto": False,
+        "target": "bank"
+    },
+        {
+        "role_id": 1361307897287675989, #Membres
+        "amount": 150,
         "cooldown": 3600,
         "auto": False,
         "target": "bank"
@@ -2079,7 +2086,7 @@ async def daily(ctx: commands.Context):
             return await ctx.send(embed=cooldown_embed)
 
     # Génération du montant (retirer la décimale)
-    amount = int(random.randint(600, 4500))
+    amount = int(random.randint(1, 250))
 
     # Récupération ou création du document utilisateur
     user_data = collection28.find_one({"guild_id": guild_id, "user_id": user_id})
