@@ -113,7 +113,7 @@ def get_cf_config(guild_id):
             "max_chance": 100,
             "max_bet": 20000
         }
-        collection8.insert_one(config)
+        collection35.insert_one(config)
     return config
 
 async def log_eco_channel(bot, guild_id, user, action, amount, balance_before, balance_after, note=""):
@@ -2085,12 +2085,12 @@ async def daily(ctx: commands.Context):
     user_data = collection28.find_one({"guild_id": guild_id, "user_id": user_id})
     if not user_data:
         user_data = {"guild_id": guild_id, "user_id": user_id, "cash": 1500, "bank": 0}
-        collection.insert_one(user_data)
+        collection28.insert_one(user_data)
 
     # Mise à jour du solde
     old_cash = user_data["cash"]
     new_cash = old_cash + amount
-    collection.update_one(
+    collection28.update_one(
         {"guild_id": guild_id, "user_id": user_id},
         {"$inc": {"cash": amount}}
     )
