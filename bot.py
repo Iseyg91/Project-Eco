@@ -677,13 +677,46 @@ async def add_money(ctx: commands.Context, user: discord.User, amount: int, loca
 
     await ctx.send(embed=embed)
 
-# Gestion des erreurs de permissions
+# Gestion des erreurs de permissions et autres
 @add_money.error
 async def add_money_error(ctx, error):
+    print("=== ERREUR DANS LA COMMANDE add_money ===")
+    print(f"[{datetime.datetime.now()}] Utilisateur : {ctx.author} ({ctx.author.id})")
+    print(f"[INFO] Guild : {ctx.guild} ({ctx.guild.id})")
+    print(f"[INFO] Commande : {ctx.command}")
+    
+    # Tentative de récupérer des infos liées à la base de données
+    try:
+        print("[DEBUG] Tentative de récupération des données utilisateur...")
+        user_data = db["users"].find_one({"_id": ctx.author.id})  # Remplace par ta collection réelle
+        if not user_data:
+            print(f"[ALERTE] Aucune donnée trouvée pour l'utilisateur {ctx.author} ({ctx.author.id})")
+        else:
+            print(f"[OK] Données utilisateur récupérées : {user_data}")
+    except Exception as db_error:
+        print(f"[ERREUR DB] Échec lors de l'accès à la base de données : {db_error}")
+        traceback.print_exc()
+
+    # Gestion d’erreurs de permission
     if isinstance(error, commands.MissingPermissions):
+        print(f"[ERREUR] Permission manquante pour {ctx.author} dans la commande add_money.")
         await ctx.send("🚫 Tu n'as pas la permission d'utiliser cette commande.")
+    
+    # Gestion d’autres erreurs possibles (type, argument manquant, etc.)
+    elif isinstance(error, commands.MissingRequiredArgument):
+        print(f"[ERREUR] Argument manquant : {error.param}")
+        await ctx.send(f"⚠️ Argument manquant : `{error.param.name}`")
+    
+    elif isinstance(error, commands.BadArgument):
+        print(f"[ERREUR] Mauvais type d'argument : {error}")
+        await ctx.send("⚠️ L'un des arguments est invalide.")
+    
     else:
+        print(f"[ERREUR] Erreur inattendue : {error}")
+        traceback.print_exc()
         await ctx.send("❌ Une erreur est survenue lors de l'exécution de la commande.")
+    
+    print("=== FIN DE GESTION D’ERREUR ===\n")
 
 @bot.hybrid_command(name="remove-money", description="Retire de l'argent à un utilisateur.")
 @app_commands.describe(user="L'utilisateur ciblé", amount="Le montant à retirer", location="Choisis entre cash ou bank")
