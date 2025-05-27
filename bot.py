@@ -2242,7 +2242,11 @@ async def leaderboard(
 
 #----------------------------------------------- Collect
 
-@bot.hybrid_command(name="collect-income", aliases=["collect"])
+@bot.hybrid_command(
+    name="collect-income",
+    aliases=["collect"],
+    description="Collecte tes revenus associés à tes rôles spéciaux, si le cooldown est terminé."
+)
 async def collect_income(ctx: commands.Context):
     member = ctx.author
     guild = ctx.guild
