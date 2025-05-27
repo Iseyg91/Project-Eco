@@ -2086,7 +2086,7 @@ async def daily(ctx: commands.Context):
             return await ctx.send(embed=cooldown_embed)
 
     # Génération du montant (retirer la décimale)
-    amount = int(random.randint(1, 250))
+    amount = int(random.randint(1, 100))
 
     # Récupération ou création du document utilisateur
     user_data = collection28.find_one({"guild_id": guild_id, "user_id": user_id})
